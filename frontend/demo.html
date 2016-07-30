@@ -1,0 +1,92 @@
+<html>
+<head>
+	<title>demo</title>
+	<link rel="stylesheet" href="./osm/OSMBuildings.css">
+  	<script src="./osm/OSMBuildings.js"></script>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
+	<style type="text/css">
+		body {
+    padding: 0;
+    margin: 0;
+}
+html, body, #map {
+    height: 100%;
+}
+	</style>
+</head>
+<body>
+	<div id="map"></div>
+<script type="text/javascript">
+// var map = new L.Map('map').setView([52.52020, 13.37570], 17);
+// new L.TileLayer('https://api.mapbox.com/styles/v1/mapbox/outdoors-v9/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoidHJlbmdyaiIsImEiOiJjaXI4aDg3dnMwMTJjZzRtOTNmZzNhZjJoIn0.faN34vxHCNN4Kv7XohyKoQ',
+//   { attribution: 'Map tiles &copy; <a href="http://mapbox.com">MapBox</a>', maxZoom: 17 }).addTo(map);
+// new OSMBuildings(map).load();
+ var osmb = new OSMBuildings({
+    position: { latitude:-33.855143, longitude:151.209900 },
+    zoom: 16,
+    minZoom: 15,
+    maxZoom: 22,
+    tilt: 45
+  });
+
+  osmb.appendTo('map');
+
+  osmb.addMapTiles(
+    'https://{s}.tiles.mapbox.com/v3/osmbuildings.kbpalbpk/{z}/{x}/{y}.png',
+    {
+      attribution: '© Data <a href="http://openstreetmap.org/copyright/">OpenStreetMap</a> · © Map <a href="http://mapbox.com">Mapbox</a>'
+    }
+  );
+
+  osmb.addGeoJSONTiles('http://{s}.data.osmbuildings.org/0.2/anonymous/tile/{z}/{x}/{y}.json');
+
+ var mario = osmb.addOBJ('mario.obj', { latitude: -33.855143, longitude: 151.209900 }, { scale: 0.3, id: "my_object_1"});
+  //osmb.addOBJ('keys.obj', { latitude: -33.855143, longitude: 151.209900 }, { scale: 2.0, id: "my_object_2"});
+ osmb.addOBJ('cat.obj', { latitude: -33.858143, longitude: 151.209900 }, { scale: 100.0, rotation: 45, id: "my_object_2", color: "#ffcc00"});
+ osmb.addOBJ('RB_TROUT.obj', { latitude: -33.858143, longitude: 151.212900 }, { scale: 200.0, rotation: 45, id: "my_object_2", color: "blue"});
+  osmb.addOBJ('grass.obj', { latitude: -33.855143, longitude: 151.209900 }, { scale: 50.0, rotation: 0, id: "grass1", color: "green"});
+  osmb.addOBJ('tree.obj', { latitude: -33.862148383431155, longitude: 151.2154769897461 }, { scale: 0.3, rotation: 0, id: "grass2", color: "green"});  
+  osmb.addOBJ('tree.obj', { latitude: -33.86606826093143, longitude: 151.21736526489258 }, { scale: 0.3, rotation: 0, id: "grass3", color: "green"});
+  osmb.addOBJ('grass.obj', { latitude: -33.87216153133538, longitude: 151.21140003204346 }, { scale: 50.0, rotation: 0, id: "grass4", color: "green"});  
+
+document.onkeydown = checkKey;
+
+var lat = -33.855143
+var lng = 151.209900
+function checkKey(e) {
+
+    e = e || window.event;
+
+    if (e.keyCode == '38') {
+        // up arrow
+        lat += 0.0003
+    }
+    else if (e.keyCode == '40') {
+        // down arrow
+        lat -= 0.0003
+    }
+    else if (e.keyCode == '37') {
+       // left arrow
+       lng -= 0.0003
+    }
+    else if (e.keyCode == '39') {
+       // right arrow
+       lng += 0.0003
+    }
+    osmb.setPosition({latitude: lat, longitude: lng})
+    mario.position = {latitude: lat, longitude: lng}
+
+}
+
+function animate() {
+	mario.rotation += 5
+	window.setTimeout(animate, 50)
+}
+
+animate()
+
+  
+</script>
+</body>
+</html>
